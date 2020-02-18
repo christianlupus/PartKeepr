@@ -14,6 +14,7 @@ services:
         environment:
             GITHUB_DEBUG_UID: 1000
             ADD_PHPINFO_FILE: 1
+            PARTKEEPR_FORCE_UPDATE: "yes"
     
     db:
         image: mariadb:10.1
