@@ -15,6 +15,11 @@ jobs:
       run: ls -lah
     - name: Fetch tags
       run: git fetch origin +refs/tags/*:refs/tags/*
+    - name: Some output
+      run: |
+        git tag
+        git status
+        ls -R .git/refs
     - name: Describe git archive
       run: git describe
     #- name: Build the Docker image
