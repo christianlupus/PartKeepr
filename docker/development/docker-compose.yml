@@ -9,7 +9,10 @@ services:
         image: FROM docker.pkg.github.com/christianlupus/partkeepr/development:latest
         
         # Use this instead if you want to develop the docker infrastructure
-        #build: ./app
+        #build:
+            #context: ./app
+            #args:
+                #SRC_IMAGE: mypk
         
         ports:
             - 8082:80
