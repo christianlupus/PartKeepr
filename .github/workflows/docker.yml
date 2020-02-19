@@ -11,9 +11,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Fetch git tags
+      run: git fetch --unshallow origin +refs/tags/*:refs/tags/*
     - name: Build the Docker image
       run: docker build docker/base --file docker/base/Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/base:latest
-    - name: Tag the Docker image with date
+    - name: Tag the Docker image with git hash
       run: docker tag docker.pkg.github.com/christianlupus/partkeepr/base:latest docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
     - name: Deploy the Docker image
       run: |
