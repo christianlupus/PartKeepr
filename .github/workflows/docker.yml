@@ -2,6 +2,10 @@ name: Docker Image Creation
 
 on: 
   push:
+    branches:
+      - master
+    tags:
+      - '**'
 
 jobs:
 
