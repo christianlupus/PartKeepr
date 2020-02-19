@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build docker/base --file Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/base:latest
+      run: docker build docker/base --file docker/base/Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/base:latest
     - name: Tag the Docker image with date
       run: docker tag docker.pkg.github.com/christianlupus/partkeepr/base:latest docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
     - name: Deploy the Docker image
