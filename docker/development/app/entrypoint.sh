@@ -9,8 +9,13 @@ if [ ! -f app/config/parameters.php ]; then
 	sudo -u www-data cp app/config/parameters.php.dist app/config/parameters.php
 fi
 
-sudo -u www-data composer install
+# Allow www-data to use composer
+mkdir /var/www/.composer && chown www-data: /var/www/.composer
 
+# Run composer
+sudo -u www-data composer install --dev
+
+# Simulare a setup run
 if [ "x$PARTKEEPR_FORCE_UPDATE" = "xyes" ]; then
 	
 	# Clears the production cache
@@ -30,6 +35,7 @@ if [ "x$PARTKEEPR_FORCE_UPDATE" = "xyes" ]; then
 	
 fi
 
+# Add phpinfo() file if requested
 if [ -n "$ADD_PHPINFO_FILE" ]; then
 	sudo -u www-data cp /var/www/html/phpinfo.php /var/www/pk/web
 fi
