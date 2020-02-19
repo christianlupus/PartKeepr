@@ -11,24 +11,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Show info 1
-      run: ls -lah
-    - name: Fetch tags
+    - name: Fetch git tags
       run: git fetch --unshallow origin +refs/tags/*:refs/tags/*
-    - name: Some output
+    - name: Build the Docker image
+      run: docker build docker/base --file docker/base/Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/base:latest
+    - name: Tag the Docker image with git hash
+      run: docker tag docker.pkg.github.com/christianlupus/partkeepr/base:latest docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
+    - name: Deploy the Docker image
       run: |
-        git tag
-        git status
-        ls -R .git/refs
-    - name: Describe git archive
-      run: git describe
-    #- name: Build the Docker image
-      #run: docker build docker/base --file docker/base/Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/base:latest
-    #- name: Tag the Docker image with git hash
-      #run: docker tag docker.pkg.github.com/christianlupus/partkeepr/base:latest docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
-    #- name: Deploy the Docker image
-      #run: |
-        #docker login -u christianlupus -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-        #docker push docker.pkg.github.com/christianlupus/partkeepr/base:latest
-        #docker push docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
+        docker login -u christianlupus -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+        docker push docker.pkg.github.com/christianlupus/partkeepr/base:latest
+        docker push docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
       
