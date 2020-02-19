@@ -14,7 +14,7 @@ jobs:
     - name: Show info 1
       run: ls -lah
     - name: Fetch tags
-      run: git fetch origin +refs/tags/*:refs/tags/*
+      run: git fetch --unshallow origin +refs/tags/*:refs/tags/*
     - name: Some output
       run: |
         git tag
