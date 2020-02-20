@@ -6,7 +6,7 @@ volumes:
     
 services:
     app:
-        image: FROM docker.pkg.github.com/christianlupus/partkeepr/development:latest
+        image: partkeepr/development:latest
         
         # Use this instead if you want to develop the docker infrastructure
         #build:
