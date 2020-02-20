@@ -30,10 +30,10 @@ if [ "x$PARTKEEPR_FORCE_UPDATE" = "xyes" ]; then
 	# Builds all required files and warms up the cache
 	sudo -u www-data ./vendor/bin/phing
 	
-	# Runs all crons
-	sudo -u www-data php app/console partkeepr:cron:run
-	
 fi
+
+# Runs all crons
+sudo -u www-data php app/console partkeepr:cron:run
 
 # Add phpinfo() file if requested
 if [ -n "$ADD_PHPINFO_FILE" ]; then
