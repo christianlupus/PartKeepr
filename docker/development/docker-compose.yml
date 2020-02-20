@@ -1,0 +1,34 @@
+---
+version: "3.7"
+
+volumes:
+    db:
+    
+services:
+    app:
+        image: FROM docker.pkg.github.com/christianlupus/partkeepr/development:latest
+        
+        # Use this instead if you want to develop the docker infrastructure
+        #build:
+            #context: ./app
+            #args:
+                #SRC_IMAGE: mypk
+        
+        ports:
+            - 8082:80
+        volumes:
+            - "../..:/var/www/pk"
+        environment:
+            GITHUB_DEBUG_UID: 1000
+            #ADD_PHPINFO_FILE: 1
+            #PARTKEEPR_FORCE_UPDATE: "yes"
+    
+    db:
+        image: mariadb:10.1
+        volumes:
+            - db:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: partkeepr
+            MYSQL_PASSWORD: partkeepr
+            MYSQL_DATABASE: partkeepr
