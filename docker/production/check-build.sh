@@ -6,7 +6,8 @@ ret=$?
 host=docker.pkg.github.com
 user=christianlupus
 repo=partkeepr
-url=$host/$user/$repo
+
+url=$repo
 
 if [ $ret -eq 0 ]; then
 
