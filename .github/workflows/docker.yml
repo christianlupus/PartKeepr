@@ -9,9 +9,10 @@ on:
 
 jobs:
 
-  create-base-docker-image:
+  base-image:
 
     runs-on: ubuntu-latest
+    name: Create the base image
 
     steps:
     - uses: actions/checkout@v2
@@ -28,23 +29,33 @@ jobs:
         docker push partkeepr/base:latest
         docker push partkeepr/base:$(git describe)
       
-  create-production-docker-image:
+  production-image:
     
     runs-on: ubuntu-latest
-    needs: create-base-docker-image
+    needs: base-image
+    name: Create the production image
     
     steps:
+    - uses: actions/checkout@v2
+    - name: Fetch git tags
+      run: git fetch --unshallow origin +refs/tags/*:refs/tags/*
+      
     - name: Check for production image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
         docker/production/check-build.sh
     
-  create-development-docker-image:
+  development-image:
     
     runs-on: ubuntu-latest
-    needs: create-base-docker-image
+    needs: base-image
+    name: Create the development image
     
     steps:
+    - uses: actions/checkout@v2
+    - name: Fetch git tags
+      run: git fetch --unshallow origin +refs/tags/*:refs/tags/*
+      
     - name: Build development image
       run: docker build docker/development/app --file docker/development/app/Dockerfile --tag partkeepr/development:latest --build-arg SRC_IMAGE=partkeepr/base:$(git describe)
     - name: Tag the development docker image with git hash
