@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  create-docker-images:
+  create-base-docker-image:
 
     runs-on: ubuntu-latest
 
@@ -19,26 +19,39 @@ jobs:
       run: git fetch --unshallow origin +refs/tags/*:refs/tags/*
       
     - name: Build the base docker image
-      run: docker build docker/base --file docker/base/Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/base:latest
+      run: docker build docker/base --file docker/base/Dockerfile --tag partkeepr/base:latest
     - name: Tag the base docker image with git hash
-      run: docker tag docker.pkg.github.com/christianlupus/partkeepr/base:latest docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
+      run: docker tag partkeepr/base:latest partkeepr/base:$(git describe)
     - name: Deploy the base docker images
       run: |
-        docker login -u christianlupus -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-        docker push docker.pkg.github.com/christianlupus/partkeepr/base:latest
-        docker push docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+        docker push partkeepr/base:latest
+        docker push partkeepr/base:$(git describe)
       
+  create-production-docker-image:
+    
+    runs-on: ubuntu-latest
+    needs: create-base-docker-image
+    
+    steps:
     - name: Check for production image
       run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
         docker/production/check-build.sh
     
+  create-development-docker-image:
+    
+    runs-on: ubuntu-latest
+    needs: create-base-docker-image
+    
+    steps:
     - name: Build development image
-      run: docker build docker/development/app --file docker/development/app/Dockerfile --tag docker.pkg.github.com/christianlupus/partkeepr/development:latest --build-arg SRC_IMAGE=docker.pkg.github.com/christianlupus/partkeepr/base:$(git describe)
+      run: docker build docker/development/app --file docker/development/app/Dockerfile --tag partkeepr/development:latest --build-arg SRC_IMAGE=partkeepr/base:$(git describe)
     - name: Tag the development docker image with git hash
-      run: docker tag docker.pkg.github.com/christianlupus/partkeepr/development:latest docker.pkg.github.com/christianlupus/partkeepr/development:$(git describe)
+      run: docker tag partkeepr/development:latest partkeepr/development:$(git describe)
     - name: Deploy the development docker images
       run: |
-        docker login -u christianlupus -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-        docker push docker.pkg.github.com/christianlupus/partkeepr/development:latest
-        docker push docker.pkg.github.com/christianlupus/partkeepr/development:$(git describe)
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+        docker push partkeepr/development:latest
+        docker push partkeepr/development:$(git describe)
 
