@@ -9,11 +9,30 @@ repo=partkeepr
 
 url=$repo
 
+CACHE_ARG=""
+
+function check_docker_cache () {
+	if [ -n "$CACHE_ARG" ]; then
+		return
+	fi
+	
+	docker pull "$1"
+	local ret=$?
+	
+	if [ $ret -eq 0 ]; then
+		CACHE_ARG="--cache-from $1"
+	fi
+}
+
 if [ $ret -eq 0 ]; then
 
 	# A valid tag was found
 	
-	docker build -t $url/production:latest --build-arg SRC_IMAGE=$url/base:$(git describe) $(dirname "$0")
+	# Try to fetch the latest build
+	check_docker_cache partkeepr/production:latest
+	check_docker_cache partkeepr/base:latest
+	
+	docker build -t $url/production:latest --build-arg SRC_IMAGE=$url/base:$(git describe) $CACHE_ARG $(dirname "$0")
 	
 	docker tag $url/production:latest $url/production:v$tag
 	docker push $url/production:v$tag
