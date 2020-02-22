@@ -14,6 +14,7 @@ RUN cat /tmp/xdebug.config >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.in
 	rm /tmp/xdebug.config
 
 COPY entrypoint.sh /entrypoint.sh
+COPY user-entrypoint.sh /user-entrypoint.sh
 COPY phpinfo.php /var/www/html/phpinfo.php
 
 WORKDIR /var/www/pk
