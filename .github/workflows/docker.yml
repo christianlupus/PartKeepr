@@ -22,7 +22,7 @@ jobs:
     - name: Build the base docker image
       run: |
         docker pull partkeepr/base:latest && docker build docker/base --file docker/base/Dockerfile --cache-from partkeepr/base:latest --tag partkeepr/base:latest
-         && docker build docker/base --file docker/base/Dockerfile --tag partkeepr/base:latest
+        docker build docker/base --file docker/base/Dockerfile --tag partkeepr/base:latest
     - name: Tag the base docker image with git hash
       run: docker tag partkeepr/base:latest partkeepr/base:$(git describe)
     - name: Deploy the base docker images
