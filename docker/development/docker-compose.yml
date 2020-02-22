@@ -6,7 +6,7 @@ volumes:
     
 services:
     app:
-        image: FROM docker.pkg.github.com/christianlupus/partkeepr/development:latest
+        image: partkeepr/development:latest
         
         # Use this instead if you want to develop the docker infrastructure
         #build:
@@ -32,3 +32,17 @@ services:
             MYSQL_USER: partkeepr
             MYSQL_PASSWORD: partkeepr
             MYSQL_DATABASE: partkeepr
+    
+    initdb:
+        build: initdb
+        depends_on:
+            - db
+        environment:
+            MYSQL_USER: partkeepr
+            MYSQL_PASSWORD: partkeepr
+            MYSQL_DATABASE: partkeepr
+            RESET_DATABASE: 'yes'
+            GITHUB_DEBUG_UID: 1000
+        volumes:
+            - "../../data:/data"
+            

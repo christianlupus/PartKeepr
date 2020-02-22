@@ -1,5 +1,5 @@
 
-ARG SRC_IMAGE=docker.pkg.github.com/christianlupus/partkeepr/base:latest
+ARG SRC_IMAGE=partkeepr/base:latest
 FROM ${SRC_IMAGE}
 
 RUN sed 's@;date.timezone =@date.timezone = UTC@;s@max_execution_time = .*@max_execution_time = 72000@;s@memory_limit = .*@memory_limit = 512M@' /usr/local/etc/php/php.ini-production > /usr/local/etc/php/php.ini
