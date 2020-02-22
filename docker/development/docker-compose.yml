@@ -18,6 +18,8 @@ services:
             - 8082:80
         volumes:
             - "../..:/var/www/pk"
+        env_file:
+            - ./github.env
         environment:
             GITHUB_DEBUG_UID: 1000
             #ADD_PHPINFO_FILE: 1
