@@ -1,5 +1,5 @@
 
-ARG SRC_IMAGE=docker.pkg.github.com/christianlupus/partkeepr/base:latest
+ARG SRC_IMAGE=partkeepr/base:latest
 FROM ${SRC_IMAGE}
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
