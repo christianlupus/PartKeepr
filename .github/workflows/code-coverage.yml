@@ -1,0 +1,36 @@
+name: Code Coverage
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Start Mariadb
+      uses: getong/mariadb-action@v1.1
+      with:
+        mariadb_version: 10.1
+        mysql_root_password: root
+        mysql_database: partkeepr_test
+        mysql_user: partkeepr
+        mysql_password: partkeepr
+    - name: Prepare script
+      run: |
+        cp app/config/parameters.php.dist app/config/parameters.php
+        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -proot
+        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -proot
+        composer self-update
+        composer install --prefer-source --no-interaction
+        app/console cache:warmup --env=test
+        app/console doctrine:schema:create --env=test
+    - name: Run the test file
+      run: SYMFONY__TESTDB=mysql DB=mysql vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage
+    - name: Pack the code coverage into a artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: code-coverage
+        path: build/logs/code-coverage
+    
