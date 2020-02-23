@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Stop MySQL
+      run: sudo systemctl stop mysql
     - name: Start Mariadb
       uses: getong/mariadb-action@v1.1
       with:
