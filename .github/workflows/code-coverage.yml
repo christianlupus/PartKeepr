@@ -18,15 +18,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Stop MySQL
-      run: sudo systemctl stop mysql
-    - name: Prepare configuration
-      run: |
-        cp app/config/parameters.php.dist app/config/parameters.php
     - name: Prepare mysql database
       run: |
         mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -hmariadb -P3307
         mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -hmariadb -P3307
+    - name: Prepare configuration
+      run: |
+        cp app/config/parameters.php.dist app/config/parameters.php
     - name: Prepare composer
       run: |
         composer self-update
