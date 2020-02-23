@@ -14,16 +14,16 @@ jobs:
     - name: Start Mariadb
       uses: getong/mariadb-action@v1.1
       with:
-        mariadb_version: 10.1
-        mysql_root_password: root
-        mysql_database: partkeepr_test
-        mysql_user: partkeepr
-        mysql_password: partkeepr
+        mariadb version: '10.1'
+        #mysql root password: root
+        mysql database: partkeepr_test
+        #mysql user: partkeepr
+        #mysql password: partkeepr
     - name: Prepare script
       run: |
         cp app/config/parameters.php.dist app/config/parameters.php
-        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -proot -h 127.0.0.1
-        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -proot -h 127.0.0.1
+        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -h 127.0.0.1
+        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -h 127.0.0.1
         composer self-update
         composer install --prefer-source --no-interaction
         app/console cache:warmup --env=test
