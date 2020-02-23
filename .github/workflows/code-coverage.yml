@@ -23,8 +23,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Prepare mysql database
       run: |
-        mysql -e "DROP database IF EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --proto=tcp
-        mysql -e "create database IF NOT EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --proto=tcp
+        mysql -e "DROP database IF EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --protocol=tcp
+        mysql -e "create database IF NOT EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --protocol=tcp
     - name: Prepare configuration
       run: |
         cp app/config/parameters.php.dist app/config/parameters.php
