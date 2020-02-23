@@ -21,6 +21,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: My Init
+      uses:  christianlupus/init-partkeepr-db-action 
     - name: Prepare mysql database
       run: |
         mysql -e "DROP database IF EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --protocol=tcp
