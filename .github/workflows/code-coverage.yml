@@ -6,26 +6,27 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    services:
+      mariadb:
+        image: mariadb:10.1
+        env:
+          MYSQL_DATABASE: 'partkeepr_test'
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        ports:
+          - 3306:3306
 
     steps:
     - uses: actions/checkout@v2
     - name: Stop MySQL
       run: sudo systemctl stop mysql
-    - name: Start Mariadb
-      uses: getong/mariadb-action@v1.1
-      with:
-        mariadb version: '10.1'
-        #mysql root password: root
-        mysql database: partkeepr_test
-        #mysql user: partkeepr
-        #mysql password: partkeepr
     - name: Prepare configuration
       run: |
         cp app/config/parameters.php.dist app/config/parameters.php
     - name: Prepare mysql database
       run: |
-        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot
-        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot
+        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -hmariadb
+        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -hmariadb
     - name: Prepare composer
       run: |
         composer self-update
