@@ -24,8 +24,8 @@ jobs:
         cp app/config/parameters.php.dist app/config/parameters.php
     - name: Prepare mysql database
       run: |
-        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -h 127.0.0.1
-        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -h 127.0.0.1
+        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot
+        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot
     - name: Prepare composer
       run: |
         composer self-update
