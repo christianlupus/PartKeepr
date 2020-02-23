@@ -19,10 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Prepare mysql database
-      uses: mariadb:10.1
       run: |
-        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -hmariadb -P3307
-        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -hmariadb -P3307
+        mysql -e "DROP database IF EXISTS partkeepr_test;" -uroot -hlocalhost -P3307
+        mysql -e "create database IF NOT EXISTS partkeepr_test;" -uroot -hlocalhost -P3307
     - name: Prepare configuration
       run: |
         cp app/config/parameters.php.dist app/config/parameters.php
