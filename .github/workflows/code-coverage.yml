@@ -21,28 +21,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: My Init
-      uses:  christianlupus/init-partkeepr-db-action@master
-    - name: Prepare mysql database
-      run: |
-        mysql -e "DROP database IF EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --protocol=tcp
-        mysql -e "create database IF NOT EXISTS partkeepr_test;" -upartkeepr -ppartkeepr -P3307 --protocol=tcp
-    - name: Prepare configuration
-      run: |
-        cp app/config/parameters.php.dist app/config/parameters.php
-    - name: Prepare composer
-      run: |
-        composer self-update
-    - name: Install dependencies
-      run: |
-        composer install --prefer-source --no-interaction
-    - name: Warm-up the cache
-      run: app/console cache:warmup --env=test
-    - name: Create the schema
-      run: app/console doctrine:schema:create --env=test
+    - name: Wait for database to be ready
+      uses: christianlupus/partkeepr-wait-for-db-action@v1
+      
+    - name: Perform the tests
+      uses:  christianlupus/partkeepr-test@master
+        #cp app/config/parameters.php.dist app/config/parameters.php
+    #- name: Prepare composer
+      #run: |
+        #composer self-update
+    #- name: Install dependencies
+      #run: |
+        #composer install --prefer-source --no-interaction
+    #- name: Warm-up the cache
+      #run: app/console cache:warmup --env=test
+    #- name: Create the schema
+      #run: app/console doctrine:schema:create --env=test
     
-    - name: Run the test file
-      run: SYMFONY__TESTDB=mysql DB=mysql vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage
+    #- name: Run the test file
+      #run: SYMFONY__TESTDB=mysql DB=mysql vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage
       
     - name: Pack the code coverage into a artifact
       uses: actions/upload-artifact@v1.0.0
