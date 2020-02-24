@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Wait for database to be ready
-      uses: christianlupus/partkeepr-wait-for-db-action@v1
+      uses: christianlupus/partkeepr-wait-for-db-action@v1.1
       
     - name: Perform the tests
       uses:  christianlupus/partkeepr-test@master
