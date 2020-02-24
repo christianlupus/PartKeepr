@@ -16,8 +16,6 @@ jobs:
           MYSQL_USER: partkeepr
           MYSQL_PASSWORD: partkeepr
           MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3307:3306
 
     steps:
     - uses: actions/checkout@v2
@@ -26,24 +24,11 @@ jobs:
       
     - name: Perform the tests
       uses:  christianlupus/partkeepr-test@master
-        #cp app/config/parameters.php.dist app/config/parameters.php
-    #- name: Prepare composer
-      #run: |
-        #composer self-update
-    #- name: Install dependencies
-      #run: |
-        #composer install --prefer-source --no-interaction
-    #- name: Warm-up the cache
-      #run: app/console cache:warmup --env=test
-    #- name: Create the schema
-      #run: app/console doctrine:schema:create --env=test
-    
-    #- name: Run the test file
-      #run: SYMFONY__TESTDB=mysql DB=mysql vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage
       
     - name: Pack the code coverage into a artifact
       uses: actions/upload-artifact@v1.0.0
       with:
         name: code-coverage
         path: build/logs/code-coverage
+      if: always()
     
