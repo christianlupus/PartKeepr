@@ -1,0 +1,14 @@
+--- ../../PartKeepr/app/config/config_test.yml	2020-01-23 11:36:59.490831237 +0100
++++ config_test.yml	2020-02-24 19:32:38.527160396 +0100
+@@ -26,8 +26,9 @@
+             mysql:
+                 driver:     pdo_mysql
+                 dbname:     partkeepr_test
+-                host:       localhost
+-                user:       travis
++                host:       mariadb
++                user:       partkeepr
++                password:   partkeepr
+                 charset:    UTF8
+             pgsql:
+                 driver:     pdo_pgsql
