@@ -1,0 +1,32 @@
+---
+version: "3.7"
+
+volumes:
+    db:
+    
+services:
+    dut:
+        build:
+            context: ./dut
+            args:
+                WWW_DATA_UID: 1000
+        
+        #ports:
+            #- 8082:80
+        volumes:
+            - "../..:/var/www/pk"
+        environment:
+            GITHUB_DEBUG_UID: 1000
+            FILTER_STRING: "--filter testGetImage src/PartKeepr/ImageBundle/Tests/ImageControllerTest.php"
+    
+    mariadb:
+        image: mariadb:10.1
+        volumes:
+            - db:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: partkeepr
+            MYSQL_PASSWORD: partkeepr
+            MYSQL_DATABASE: partkeepr_test
+    
+            
