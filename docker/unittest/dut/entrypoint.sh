@@ -8,10 +8,6 @@ fi
 
 set -e
 
-echo "Cloning the test files"
-time rsync -a /image/ /var/www/pk --exclude=/docker --exclude=/.git --delete --delete-delay --delete-excluded
-echo "done"
-
 # Setting some basic constants
 export SYMFONY__TESTDB=mysql
 export DB=mysql
@@ -59,5 +55,5 @@ if [ -n "$DEBUG_VARS" ]; then
 	echo "Enabling debuging with XDEBUG_CONFIG=\"$DEBUG_VARS\""
 	export XDEBUG_CONFIG="$DEBUG_VARS"
 fi
-vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage $FILTER_STRING
+vendor/bin/phpunit -c app/ --coverage-html /report $FILTER_STRING
 
