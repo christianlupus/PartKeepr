@@ -8,6 +8,10 @@ fi
 
 set -e
 
+echo "Cloning the test files"
+time rsync -a /image/ /var/www/pk --exclude=/docker --exclude=/.git --delete --delete-delay --delete-excluded
+echo "done"
+
 # Setting some basic constants
 export SYMFONY__TESTDB=mysql
 export DB=mysql
@@ -49,7 +53,11 @@ app/console cache:warmup --env=test
 
 echo "Create the schema"
 app/console doctrine:schema:create --env=test
-    
+
 echo "Run the test file"
-php -d xdebug.remote_enable=1 vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage $FILTER_STRING
+if [ -n "$DEBUG_VARS" ]; then
+	echo "Enabling debuging with XDEBUG_CONFIG=\"$DEBUG_VARS\""
+	export XDEBUG_CONFIG="$DEBUG_VARS"
+fi
+vendor/bin/phpunit -c app/ --coverage-html build/logs/code-coverage $FILTER_STRING
 
