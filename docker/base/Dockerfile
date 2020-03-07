@@ -8,7 +8,8 @@ RUN apt-get update && \
 	docker-php-ext-configure bcmath && docker-php-ext-install bcmath && \
 	docker-php-ext-configure gd && docker-php-ext-install gd && \
 	docker-php-ext-install opcache intl dom pdo pdo_mysql pdo_pgsql && \
-	pecl install apcu_bc-beta && docker-php-ext-enable apcu
+	pecl install apcu_bc-beta && docker-php-ext-enable apcu && \
+	apt-get clean
 
 RUN mkdir /var/www/pk && chown www-data /var/www/pk
 

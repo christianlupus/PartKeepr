@@ -4,7 +4,7 @@ FROM ${SRC_IMAGE}
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
-RUN apt-get install -y less nano vim
+RUN apt-get update && apt-get install -y less nano vim
 
 # Setup PHP settings
 RUN sed 's@;date.timezone =@date.timezone = UTC@;s@max_execution_time = .*@max_execution_time = 72000@;s@memory_limit = .*@memory_limit = 512M@' /usr/local/etc/php/php.ini-development > /usr/local/etc/php/php.ini
