@@ -3,8 +3,6 @@
 tag=$(git describe --abbrev=0 --exact-match 2> /dev/null)
 ret=$?
 
-host=docker.pkg.github.com
-user=christianlupus
 repo=partkeepr
 
 url=$repo
