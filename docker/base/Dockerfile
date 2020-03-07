@@ -14,7 +14,7 @@ RUN mkdir /var/www/pk && chown www-data /var/www/pk
 
 WORKDIR /var/www/pk
 
-# Setup Apache and PHP settings
+# Setup Apache settings
 RUN a2enmod rewrite
 RUN find /etc/apache2 -type f -exec sed 's@/var/www/html@/var/www/pk/web@g' -i \{\} +
 
