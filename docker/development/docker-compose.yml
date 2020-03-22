@@ -50,7 +50,7 @@ services:
             MYSQL_USER: partkeepr
             MYSQL_PASSWORD: partkeepr
             MYSQL_DATABASE: partkeepr
-            # Setting this to yes will enable reset upon running
+            ## Setting this to yes will enable reset upon running
             #RESET_DATABASE: 'yes'
             GITHUB_DEBUG_UID: 1000
         volumes:
