@@ -20,4 +20,4 @@ COPY phpinfo.php /var/www/html/phpinfo.php
 WORKDIR /var/www/pk
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["docker-php-entrypoint", "apache2-foreground"]
+CMD ["docker-php-entrypoint", "php-fpm"]

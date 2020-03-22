@@ -1,5 +1,5 @@
 
-FROM php:7.1-apache-buster
+FROM php:7.1-fpm-buster
 
 RUN apt-get update && \
 	apt-get upgrade -y && \
@@ -14,10 +14,6 @@ RUN apt-get update && \
 RUN mkdir /var/www/pk && chown www-data /var/www/pk
 
 WORKDIR /var/www/pk
-
-# Setup Apache settings
-RUN a2enmod rewrite
-RUN find /etc/apache2 -type f -exec sed 's@/var/www/html@/var/www/pk/web@g' -i \{\} +
 
 # Install Composer
 # See https://tecnstuff.net/how-to-install-composer-on-debian-10/
