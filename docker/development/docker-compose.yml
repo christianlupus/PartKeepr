@@ -14,8 +14,6 @@ services:
             #args:
                 #SRC_IMAGE: mypk
         
-        ports:
-            - 8082:80
         volumes:
             - "../..:/var/www/pk"
         env_file:
@@ -24,6 +22,14 @@ services:
             GITHUB_DEBUG_UID: 1000
             #ADD_PHPINFO_FILE: 1
             #PARTKEEPR_FORCE_UPDATE: "yes"
+    
+    nginx:
+        image: nginx
+        ports:
+            - 8082:80
+        volumes:
+            - "../..:/var/www/pk"
+        
     
     db:
         image: mariadb:10.1
