@@ -30,6 +30,10 @@ if [ $ret -eq 0 ]; then
 	check_docker_cache partkeepr/production:latest
 	check_docker_cache partkeepr/base:latest
 	
+	tar czf /tmp/partkeepr-docker-build.tar.gz -C ../.. --exclude app/cache/* --exclude app/logs/* app data src theme web app.json build.xml composer.json composer.lock LICENSE
+	mv /tmp/partkeepr-docker-build.tar.gz .
+	
+	#docker build -t $url/production:latest --build-arg SRC_IMAGE=$url/base:latest $CACHE_ARG $(dirname "$0")
 	docker build -t $url/production:latest --build-arg SRC_IMAGE=$url/base:$(git describe) $CACHE_ARG $(dirname "$0")
 	
 	docker tag $url/production:latest $url/production:v$tag
