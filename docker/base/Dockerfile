@@ -1,5 +1,6 @@
 
-FROM php:7.1-fpm-buster
+ARG SRC_IMAGE=php:7.1-fpm-buster
+FROM ${SRC_IMAGE}
 
 RUN apt-get update && \
 	apt-get upgrade -y && \
