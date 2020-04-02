@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -x
+
 tag=$(git describe --abbrev=0 --exact-match 2> /dev/null)
 ret=$?
 
@@ -22,7 +24,7 @@ function check_docker_cache () {
 	fi
 }
 
-if [ $ret -eq 0 ]; then
+if [ $ret -eq 0 -o 0 -eq 0 ]; then
 
 	# A valid tag was found
 	
@@ -37,7 +39,7 @@ if [ $ret -eq 0 ]; then
 	docker build -t $url/production:latest --build-arg SRC_IMAGE=$url/base:$(git describe) $CACHE_ARG $(dirname "$0")
 	
 	docker tag $url/production:latest $url/production:v$tag
-	docker push $url/production:v$tag
+	#docker push $url/production:v$tag
 
 else
 
