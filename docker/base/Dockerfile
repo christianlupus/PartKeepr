@@ -4,10 +4,10 @@ FROM ${SRC_IMAGE}
 
 RUN apt-get update && \
 	apt-get upgrade -y && \
-	apt-get install -y sudo curl wget git unzip libldap2-dev libpng++-dev libicu-dev libcurl4-gnutls-dev libxml2-dev libpq-dev && \
+	apt-get install -y sudo curl wget git unzip libldap2-dev libpng++-dev libicu-dev libcurl4-gnutls-dev libxml2-dev libpq-dev libfreetype6-dev && \
 	docker-php-ext-configure ldap && docker-php-ext-install ldap && \
 	docker-php-ext-configure bcmath && docker-php-ext-install bcmath && \
-	docker-php-ext-configure gd && docker-php-ext-install gd && \
+	docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --enable-gd-native-ttf && docker-php-ext-install gd && \
 	docker-php-ext-install opcache intl dom pdo pdo_mysql pdo_pgsql && \
 	pecl install apcu_bc-beta && docker-php-ext-enable apcu && \
 	apt-get clean
