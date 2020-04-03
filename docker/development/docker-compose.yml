@@ -18,6 +18,8 @@ services:
             - "../..:/var/www/pk"
         env_file:
             - ./github.env
+        depends_on:
+            - db
         environment:
             GITHUB_DEBUG_UID: 1000
             #ADD_PHPINFO_FILE: 1
@@ -25,6 +27,8 @@ services:
     
     nginx:
         image: nginx
+        depends_on:
+            - fpm
         ports:
             - 8082:80
         volumes:
