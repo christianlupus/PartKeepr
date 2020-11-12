@@ -26,3 +26,10 @@ RUN cd /tmp && php -r "copy('https://getcomposer.org/installer', 'composer-setup
 	php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); exit(1); } echo PHP_EOL;" && \
 	php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
+RUN apt-get update && apt-get install -y less nano vim
+
+COPY xdebug.config /tmp
+RUN cat /tmp/xdebug.config >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
+	rm /tmp/xdebug.config

@@ -10,7 +10,6 @@ There are in fact different folders here that have differrent goals. Here is a s
 |----|----|
 | `base` | A basic image can be generated as a starting point for any further images. It contains the required php extensions to run PartKeepr. |
 | `development` | This folder contains a complete setup using docker-compose to develop with PartKeepr. |
-| `production` | There is again a simple Dockerfile to create a image ready to be used for production usage. |
 
 ## Details on the base image
 
@@ -31,13 +30,6 @@ Second, there is the main PartKeepr installation called `app`. More on it later.
 Third, there is a service called `initdb`. Its purpose is to restore the database and `data` folder to a pristane state. This one should normally not started unless one wnats to reset the database.
 
 **Note:** There needs to be a useful default inserted into the initdb. At the moment it only clears out the database to be valid but containing no parts at all. Exactly the situtation you have after a fresh installation. Some test data might be useful here.
-
-## Details on the production image
-
-**Note:** This needs some rework yet.
-At the moment no data of PartKeepr is included in the image.
-
-The idea is to have a complete image that contains all relevant aspects of PartKeepr. Each tag should have one such image created to allow easy updating of PartKeepr using docker via `docker pull && docker up`.
 
 ## The main development image
 
