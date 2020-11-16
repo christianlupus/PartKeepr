@@ -36,14 +36,15 @@ Third, there is a service called `initdb`. Its purpose is to restore the databas
 Apart from some additional tools in the docker image mainly an xdebug extension for php is installed.
 
 The image is intended to work on the main sources as checked out. This allows easy updating and testing cycles.  
-The files belong typically to the deveoper user. This causes problems when PartKeepr dowes not have sufficient permissions or if the UID does not match. To overcome this, the entry point script changes the UID of the `www-data` user in the image to some UID provided by the environemnt variable `GITHUB_DEBUG_UID`. Any access is thus made from the same rights as the development user outside and all newly created files will belong to him.
+The files belong typically to the developer user. This causes problems when PartKeepr does not have sufficient permissions or if the UID does not match. To overcome this, the entry point script changes the UID of the `www-data` user in the image to some UID provided by the environemnt variable `GITHUB_DEBUG_UID`. Any access is thus made from the same rights as the development user outside and all newly created files will belong to him.
 
 If no explicit command is given, the service starts apache.
 
 Before apache is started, some preparations are made. This is for one, that composer is called to update any dependencies. If the user set `PARTKEEPR_FORCE_UPDATE` to `yes` a set of steps are run that represent a setup run (see [this wiki entry](https://wiki.partkeepr.org/wiki/Running_PartKeepr_from_GIT#Updating)). All cron jobs are run upon restarting to avoid additional messages here.
 
-A manual command is possible as well.
-Then, no initialation script is run and no composer run is perfomred.
+Calling a manual command is possible as well.
+Then, no initialation script is run and no composer run is performed.
+Just do something like `docker-compose run --rm app composer update`.
 
 By setting `ADD_PHPINFO_FILE` to `1`, the developer can add a file to the web folder that serves a `phpinfo()` command.
 
