@@ -12,7 +12,7 @@ services:
         #build:
             #context: ./app
             #args:
-                #SRC_IMAGE: mypk
+                #SRC_IMAGE: partkeepr/base-dev:test
         
         ports:
             - 8082:80

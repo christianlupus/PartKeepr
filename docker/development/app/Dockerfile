@@ -1,5 +1,5 @@
 
-ARG SRC_IMAGE=partkeepr/base:latest
+ARG SRC_IMAGE=partkeepr/base-dev:latest
 FROM ${SRC_IMAGE}
 
 # Setup PHP settings
