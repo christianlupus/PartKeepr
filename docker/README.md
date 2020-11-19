@@ -49,3 +49,38 @@ Just do something like `docker-compose run --rm app composer update`.
 By setting `ADD_PHPINFO_FILE` to `1`, the developer can add a file to the web folder that serves a `phpinfo()` command.
 
 There is also a commented sketch in the docker-compose how to debug and develop the Dockerfile.
+
+## Setting up a development environment
+
+In order to start using the suggested development environment a few steps are required to set them up for the first time.
+This guide assumes, you have just freshly checked out the PartKeer repository from git.
+
+1. Navigate in a console to the folder `docker/development`.
+2. Copy the file `.github.env.dist` to `.github.env`.
+3. Create a github personal access token in the settings on github. You need no additional rights. Put the generated token into the file `.github.env` where the `XXX...XXX` markers are.  
+  Alternatively, you can also remove the line in the `.github.env` file. The reason for this setup is that github poses a rate limit on the number of accesses. When using the `composer` command much, these rate limits might be triggered easily. By logging in, the limits are pushed to higher values.
+2. Call `docker-compose pull` to fetch all images from the docker hub. Alternatively you could [build the images manually](#building-the-images-manually).
+3. First, you need to fire up the database and let it initialize. This is done by callng `docker-compose up -d db`. You can peek into the process by `docker-compose logs -f db`. Wait for a message that the server is ready for connections and listening on port 3306. Using `<Ctrl><c>`, you can exit from the logs.
+4. Build the `initdb` image by calling `docker-compose build initdb`. This will take a few moments as it builds a docker image.
+4. By default the line `RESET_DATABASE: 'yes'` in the file `docker-compose.yml` is commented. This is to avoid accidentially removing your data. Uncomment the line.
+5. Initialize the data by calling `docker-compose up initdb`.
+6. Recomment the line in the `docker-compose.yml` file you just uncommented.
+7. Now, you can fire up the main container by calling `docker-compose up -d app`.
+8. The container will initialize some dependenciees. This might take some time as well. Again using `docker-compose logs -f app` you can peek into the process and with `<Ctrl><c>` you can return to the console.  
+   There might be some error messages regarding missing tables.
+9. The partkeepr instance is avaliable at http://127.0.0.1:8082/. You will get a white screen as you need to start the [setup](http://127.0.0.1:8082/setup/) once. Just accept the defaults but do not create a new set of users (keep the existing ones) and select HTTP Basic authentication.
+10. You might want to or not set up a cron job as described. The check is disabled by default.
+
+## Building the images manually
+
+It is possible to build the image manually. The main purpose is to teest, debug and alter the docker setup. Here are the steps to perform the build from scratch:
+
+1. Go to `/docker/base-dev/`.
+2. Call `docker build -t partkeepr/base-dev:latest .`. You can also give another tag name but you need to adopt later.
+3. Go to `/docker/development`.
+4. Alter the `docker-compose.yml` file.
+    - Uncomment all the lines in the `app` service that start with the `build:` name as the comment indicates.
+    - You might want to alter the `SRC_IMAGE` if you tagged with a different name above.
+    - You might want to alter the name of the generated image to not overwrite the local `partkeepr/deevelopment:latest` image.
+5. Call `docker-compose build app`.
+
