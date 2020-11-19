@@ -12,7 +12,7 @@ services:
         #build:
             #context: ./app
             #args:
-                #SRC_IMAGE: partkeepr/base-dev:test
+                #SRC_IMAGE: partkeepr/base-dev:latest
         
         ports:
             - 8082:80
