@@ -2,13 +2,18 @@
 
 cd /var/www/pk
 
-# Check if parameters are present
-if [ ! -f app/config/parameters.php ]; then
-	cp app/config/parameters.php.dist app/config/parameters.php
-fi
-
 # Run composer
 composer install
+
+# Check if parameters are present
+if [ ! -f app/config/parameters.php ]; then
+	echo 'No configuration was found yet. A defult configuration was generated.' >&2
+	echo 'Please visit the setup page if you encounter issues.' > &2
+	
+	# Remove any db related config from the dist file
+	grep -v "setParameter('database_" app/config/parameters.php.dist > app/config/parameters.php
+	cat /parameters.defaults.php >> app/config/parameters.php
+fi
 
 # Simulare a setup run
 if [ "x$PARTKEEPR_FORCE_UPDATE" = "xyes" ]; then
