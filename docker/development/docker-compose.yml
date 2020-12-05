@@ -42,6 +42,7 @@ services:
         environment:
             MYSQL_USER: partkeepr
             MYSQL_PASSWORD: partkeepr
+            MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: partkeepr
             # Setting this to yes will enable reset upon running
             #RESET_DATABASE: 'yes'

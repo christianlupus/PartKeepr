@@ -22,17 +22,19 @@ done
 echo "MySQL server should now be reachable"
 
 function sql () {
-	mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -h "$DB_HOST" "$MYSQL_DATABASE"
+	mysql -u "root" -p"$MYSQL_ROOT_PASSWORD" -h "$DB_HOST" "$@"
 }
 
 echo "Dropping old database tables (housekeeping)"
 
-echo "SHOW TABLES;" | sql | tail -n +2 | while read tab
-do
-	echo "DROP TABLE $tab;"
-done | sql
+echo "DROP DATABASE $MYSQL_DATABASE;" | sql
 
-sql < /dump.sql
+echo "CREATE DATABASE $MYSQL_DATABASE;" | sql
+echo "GRANT ALL ON $MYSQL_DATABASE.* TO $MYSQL_USER;" | sql
+
+echo "SHOW TABLES;" | sql "$MYSQL_DATABASE"
+
+sql "$MYSQL_DATABASE" < /dump.sql
 
 echo "Dumping completed"
 
