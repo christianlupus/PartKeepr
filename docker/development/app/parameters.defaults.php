@@ -5,7 +5,7 @@ $container->setParameter('database_password', 'partkeepr');
 $container->setParameter('database_port', 3306);
 $container->setParameter('database_user', 'partkeepr');
 
-$container->setParameter('partkeepr.cronjob.check', true);
+$container->setParameter('partkeepr.cronjob.check', false);
 
 $container->setParameter('partkeepr.frontend.auto_login.enabled', true);
 $container->setParameter('partkeepr.frontend.auto_login.password', 'admin');
